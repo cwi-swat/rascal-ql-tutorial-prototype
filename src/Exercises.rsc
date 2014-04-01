@@ -5,6 +5,7 @@ import Resolve;
 import IO;
 import List;
 import String;
+import FormatExpr;
 
 /*
  * Exercise 1: add an unless statement which is to be used
@@ -52,6 +53,22 @@ Form desugar(Form f) {
  *   DateValueWidgets (see resources/js/framework/value-widgets.js)
  *
  */
+
+alias Node = tuple[loc id, str label];
+alias Deps = rel[Node from, Node to];
+
+Node nodeFor(Id x) = <x@location, x.name>;
+
+Deps dataDeps(Form f) 
+  = { <nodeFor(x), nodeFor(y)> | /computed(_, x, _, e) := f, /Id y := e };
+
+Deps controlDeps(Form f) {
+  return {};
+}
+
+bool hasCycles(Form f) {
+  return false;
+}
 
 /* 
  * Exercise 3: Implementing a rename refactoring
