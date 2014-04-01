@@ -19,7 +19,7 @@ anno rel[loc,loc, str] Tree@hyperlinks;
 rel[loc,loc,str] computeXRef(Info i) 
   = { <u, d, "<l>"> | <u, d> <- i.refs.use, <l, d> <- i.labels }; 
 
-public void setupQL() {
+public void main() {
   registerLanguage(TQL, "tql", Tree(str src, loc l) {
     return parseQL(src, l);
   });
