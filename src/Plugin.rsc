@@ -17,8 +17,7 @@ private str TQL ="Tutorial QL";
 anno rel[loc,loc, str] Tree@hyperlinks;
 
 rel[loc,loc,str] computeXRef(Info i) 
-  = { <u, d, "<l>"> | u <- i.refs.use, d <- i.refs.use[u], 
-                      l <- i.labels, d in i.labels[l] }; 
+  = { <u, d, "<l>"> | <u, d> <- i.refs.use, <l, d> <- i.labels }; 
 
 public void setupQL() {
   registerLanguage(TQL, "tql", Tree(str src, loc l) {
