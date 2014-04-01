@@ -24,9 +24,7 @@ Info resolve(Form f) {
   rel[Id, loc] env = {};	
   
   // Return a function to look up decls of `n` in defs
-  set[loc]() lookup(Id n) 
-    = set[loc]() { return env[n]; };
-
+  set[loc]() lookup(Id n) = set[loc]() { return env[n]; };
 
   void addUse(loc l, Id name) {
     useLazy[l] = lookup(name);

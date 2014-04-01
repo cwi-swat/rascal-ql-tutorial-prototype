@@ -50,6 +50,9 @@ str question2decl(question(l, v, t), str parent)
 str question2decl(computed(l, v, t, e), str parent)
   = question2widget(l, v, t, parent, exp2lazyValue(e));
 
+default str question2decl(Question q) = "throw \"Unimplemented\";";
+
+
 str question2widget(str l, Id v, QType t, str parent, str e)
   = "var <v.name> = new QLrt.SimpleFormElementWidget({
     '  name: \"<v.name>\", 

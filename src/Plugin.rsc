@@ -6,9 +6,11 @@ import Resolve;
 import Check;
 import Outline;
 import Compile;
+import Exercises;
 
 import ParseTree;
 import util::IDE;
+import util::Prompt;
 import Message;
 import IO;
 
@@ -41,13 +43,29 @@ public void main() {
       ast = implodeQL(pt);
       msgs = checkForm(ast, resolve(ast));
       if (msgs == {}) {
+        ast = desugar(ast);
         js = pt@\loc[extension="js"];
         writeFile(js, form2js(ast));
         html = pt@\loc[extension="html"];
         writeFile(html, form2html(ast, js));
       }
       return msgs;
-    })
+    }),
+    
+    popup(
+      menu("Tutorial QL", [
+        edit("Rename...", str (Tree pt, loc selection) {
+          ast = implodeQL(pt);
+          refs = resolve(ast).refs;
+          names = { u | u <- refs.use<0> + refs.use<1>, selection <= u };
+          if ({loc name} := names) {
+            new = prompt("Enter a new name: ");
+            return rename(unparse(pt),  name, new, refs);
+          }
+          alert("No name selected");
+          return unparse(pt);
+        })]))
+    
   };
   
   registerContributions(TQL, contribs);
