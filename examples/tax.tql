@@ -21,9 +21,7 @@ form taxOfficeExample {
       privateDebt: money
     "Value residue:"
       valueResidue: money = 
-        ((sellingPrice - privateDebt) * 0)
-        
-    "Sell2" sellingPrice: money
+        ((sellingPrice - privateDebt) * 2)
   }
 
   "Did you sell a house in 2010?"

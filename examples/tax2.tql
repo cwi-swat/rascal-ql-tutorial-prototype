@@ -12,6 +12,4 @@ form taxOfficeExample {
     "Private debts for the sold house:"
       privateDebt: money
   }
-  
 }
-
