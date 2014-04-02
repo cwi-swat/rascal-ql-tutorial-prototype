@@ -27,7 +27,8 @@ void fizzBuzz() {
 
 /*
  * Exercise 1 (evolution): add an unless statement which is to be used
- * similar to ifThen statements: unless (x > 1) { "Q?" q: int }
+ * similar to ifThen statements: 
+ *  unless (x > 1) { "What is your age?" age: int }
  *
  * - add a production to Question in QL.rsc
  * - add a constructor to Question in AST.rsc
@@ -88,11 +89,12 @@ Form desugar(Form f) {
  *
  * Warm up
  *
- * This exercise amounts to computing an equivalence class over the use-def
- * relation `use` which is declared as `rel[loc use, loc def]`.
+ * This exercise amounts to computing the equivalence relation of the use-def
+ * relation `Ref.use` which is declared as `rel[loc use, loc def]`.
+ * (See http://en.wikipedia.org/wiki/Equivalence_relation)
  *
  * - use a comprehension to compute the symmetric closure of a relation
- * - use R+ to compute the transitive closure of a relation
+ * - use R* to compute the reflexive, transitive closure of a relation
  * - use right image R[x] to compute all locs equivalent to `name`.
  */ 
 
@@ -110,6 +112,9 @@ set[loc] eqClass(loc name, Use use) {
  *   in a TQL editor, and richt-click, select Rename... in the
  *   context menu.
  *
+ * Optional: implement the rename refactoring, but now on ASTs.
+ * Use format (Format to see the result of your refactoring.)
+ * 
  * Optional: check as precondition that `new` name isn't
  * already used. Retrieve the name at a location by 
  * subscripting on src: src[l.offset..l.offset+l.length].
@@ -121,6 +126,14 @@ str rename(str src, loc name, str new, Refs r) {
  
  /*
  * Exercise 5 (analysis): extract control dependencies.
+ *
+ * Warm up:
+ * - use deep matching (using /) to find a variables in a form
+ * - use deep match to find all question with label value (within 
+ *   the quotes) equal to name; make sure there such labels in
+ *   your test code.
+ *
+ * Exercise:
  *
  * - use the Node and Deps data types and nodeFor function shown below
  * - visit the form, and when encountering ifThen/ifThenElse
