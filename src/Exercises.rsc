@@ -25,13 +25,15 @@ void fizzBuzz() {
 }
 
 /*
- * Exercise 1: add an unless statement which is to be used
+ * Exercise 1 (extension): add an unless statement which is to be used
  * similar to ifThen statements: unless (x > 1) { "Q?" q: int }
  *
  * - add a production to Question in QL.rsc
  * - add a constructor to Question in AST.rsc
  * - add a tc rule to the type checker in Check.rsc
  * - add a case in the outliner in Outline.rsc
+ * - add a normalize rule to the normalize in Normalize.rsc
+ *   (note: desugar unless to if(not(e), s))
  *
  * Tip: implement unless analogous to ifThen in all cases
  *
@@ -43,9 +45,20 @@ void fizzBuzz() {
  * is issued in the case of ifThen(not(_), ...).
  */
 
+/* 
+ * Exercise 2 (extension): add support for date valued questions
+ *
+ * - add syntax to QType to allow date fields (QL.rsc)
+ * - add new QType constructor for dates (AST.rsc)
+ * - add new case to type2widget in Compile to generate 
+ *   DateValueWidgets (see resources/js/framework/value-widgets.js)
+ *
+ */
+ 
+ 
 
 /*
- * Exercise 2: desugar unless to ifThen
+ * Exercise 3 (transformation): explicit desugaring of unless to ifThen
  *
  * - use `visit` to traverse and rewrite the Form
  * - use pattern matching to match on unless nodes.
@@ -53,44 +66,29 @@ void fizzBuzz() {
  *
  * The desugar function is called before compilation
  * so the compiler (Compile) does not have to be changed
- * to support unless.
+ * to support unless, even if no normalize() was used.
  *
  * Optional: add unless else, and desugar it to ifThenElse
  */
+
 Form desugar(Form f) {
   return f;
 }
 
-/* 
- * Exercise: support for date time fields
+/*
+ * Exercise 4 (analysis): extract control dependencies.
  *
- * - add syntax to QType to allow date fields (QL)
- * - add new QType constructor for dates (AST)
- * - add new case to type2widget in Compile to generate 
- *   DateValueWidgets (see resources/js/framework/value-widgets.js)
+ * - use the Node and Deps data types and nodeFor function shown below
+ * - visit the form, and when encountering ifThen/ifThenElse
+ * - record an edge (tuple) between each Id used in the condition
+ *   and each Id defined in the body/bodies.
+ *
+ * For inspiration, a function to extract data dependencies
+ * is shown below.
+ * Tip: first define a helper function set[Id] definedIn(Question q).
  *
  */
  
- 
-/* Exercise: normalize forms
- *
- * Questionnaires can be represented in "normal form",
- * that is, as a flat list of ifThen questions with a 
- * single questin body (i.e. question or computed,
- * but not group).
- *
- * - write a recursive function that flattens a form
- * - pass conditions down ifThen/ifThenElse bodies
- * - use a reducer ( init | it + ... | ... <- .. ) to
- *   flatten groups
- * - use the + operator to concatenate lists
- * - use pattern-based dispatch for case distinction
- */
- 
-list[Question] flatten(form(_, qs))
-  = flatten(group(qs), \true());
- 
-
 
 alias Node = tuple[loc id, str label];
 alias Deps = rel[Node from, Node to];
@@ -102,26 +100,24 @@ Deps dataDeps(Form f)
 
 Deps controlDeps(Form f) {
   return {};
-  g = {};
-  
-  set[Id] definedIn(Question q) = { d.name | /Question d := q, d has name };
-  
-  top-down visit (f) {
-    case ifThen(c, q): 
-      g += { <nodeFor(x), nodeFor(y)> | /Id x := c, y <- definedIn(q) };
-    case ifThenElse(c, q1, q2): 
-      g += { <nodeFor(x), nodeFor(y)> | /Id x := c, y <- definedIn(q1) + definedIn(q2) };
-  }
-  return g;
 }
+
+/*
+ * Exercise 5 (analysis): cycle detection
+ *
+ * - detect cycles in a form using dataDeps and controlDeps
+ * - use transitive reflexive closure R* 
+ *
+ * Optional: compute the Nodes involved in a cycle (if any).
+ */
 
 bool hasCycles(Form f) {
   return false;
 }
 
 /* 
- * Exercise 3: Implementing a rename refactoring
- * 3a: compute all locations referencing/referenced by a name loc
+ * Exercise 6: Implementing a rename refactoring
+ * 6a (analysis): compute all locations referencing/referenced by a name loc
  *
  * This exercise amounts to computing an equivalence class over the use-def
  * relation `use` which is declared as `rel[loc use, loc def]`.
@@ -136,8 +132,8 @@ set[loc] eqClass(loc name, Use use) {
 }
 
 /*
- * Exercise 3: Implement a rename refactoring
- * 3b: substitute all names in the input source
+ * Exercise 6: Implement a rename refactoring
+ * 6b (transformation): substitute all names in the input source
  *
  * - construct a renaming map map[loc, str] based on 3a
  * - use the function substitute(src, map[loc, str]) from String
