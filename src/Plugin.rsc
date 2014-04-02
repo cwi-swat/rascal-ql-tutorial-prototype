@@ -6,7 +6,7 @@ import Resolve;
 import Check;
 import Outline;
 import Compile;
-import Flatten;
+import Normalize;
 import Exercises;
 
 import ParseTree;
@@ -44,7 +44,7 @@ public void main() {
       ast = implodeQL(pt);
       msgs = checkForm(ast, resolve(ast));
       if (msgs == {}) {
-        qs = flatten(desugar(ast));
+        qs = normalize(desugar(ast));
         js = pt@\loc[extension="js"];
         writeFile(js, questions2js(qs));
         html = pt@\loc[extension="html"];

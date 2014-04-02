@@ -75,18 +75,58 @@ Form desugar(Form f) {
   return f;
 }
 
+
+/* 
+ * Exercise 4: Implement a rename refactoring
+ * 4a (analysis): compute all locations referencing/referenced by a name loc
+ *
+ * This exercise amounts to computing an equivalence class over the use-def
+ * relation `use` which is declared as `rel[loc use, loc def]`.
+ *
+ * - use a comprehension to compute the symmetric closure of a relation
+ * - use R+ to compute the transitive closure of a relation
+ * - use right image R[x] to compute all locs equivalent to `name`.
+ */ 
+
+set[loc] eqClass(loc name, Use use) {
+  return {};
+}
+
 /*
- * Exercise 4 (analysis): extract control dependencies.
+ * Exercise 4: Implement a rename refactoring
+ * 4b (transformation): substitute all names in the input source
+ *
+ * - construct a renaming map map[loc, str] based on 3a
+ * - use the function substitute(src, map[loc, str]) from String
+ * - observe the effect of rename by selecting an identifier
+ *   in a TQL editor, and richt-click, select Rename... in the
+ *   context menu.
+ *
+ * Optional: check as precondition that `new` name isn't
+ * already used. Retrieve the name at a location by 
+ * subscripting on src: src[l.offset..l.offset+l.length].
+ */
+str rename(str src, loc name, str new, Refs r) {
+  return src;
+}
+ 
+ 
+ /*
+ * Exercise 5 (analysis): extract control dependencies.
  *
  * - use the Node and Deps data types and nodeFor function shown below
  * - visit the form, and when encountering ifThen/ifThenElse
  * - record an edge (tuple) between each Id used in the condition
  *   and each Id defined in the body/bodies.
+ * - use deep match (/p) to find Ids in expressions
  *
  * For inspiration, a function to extract data dependencies
  * is shown below.
- * Tip: first define a helper function set[Id] definedIn(Question q).
  *
+ * Tip: first define a helper function set[Id] definedIn(Question q)
+ * that returns the defined names at arbitrary depth in a question (q).
+ *
+ * Tip: use the visualize...
  */
  
 
@@ -103,9 +143,10 @@ Deps controlDeps(Form f) {
 }
 
 /*
- * Exercise 5 (analysis): cycle detection
+ * Exercise 6 (analysis): cycle detection
  *
  * - detect cycles in a form using dataDeps and controlDeps
+ * - first lift a Deps relation to rel[str, str]
  * - use transitive reflexive closure R* 
  *
  * Optional: compute the Nodes involved in a cycle (if any).
@@ -115,34 +156,45 @@ bool hasCycles(Form f) {
   return false;
 }
 
-/* 
- * Exercise 6: Implementing a rename refactoring
- * 6a (analysis): compute all locations referencing/referenced by a name loc
- *
- * This exercise amounts to computing an equivalence class over the use-def
- * relation `use` which is declared as `rel[loc use, loc def]`.
- *
- * - use a comprehension to compute the symmetric closure of a relation
- * - use R+ to compute the transitive closure of a relation
- * - use right image R[x] to compute all locs equivalent to `name`.
- */ 
-
-set[loc] eqClass(loc name, Use use) {
-  return {};
-}
 
 /*
- * Exercise 6: Implement a rename refactoring
- * 6b (transformation): substitute all names in the input source
+ * Exercise 7 (analysis): identify use-before-defined questions
+ * Generate the locations of defined questions used before
+ * they are defined (textually).
+ * 
+ * Example, for:
+ *   "q1" q1: int = 2 * q2
+ *   "q2" q2: int
+ * generate the location of q2
  *
- * - construct a renaming map map[loc, str] based on 3a
- * - use the function substitute(src, map[loc, str]) from String
- *
- * Optional: check as precondition that `new` name isn't
- * already used. Retrieve the name at a location by 
- * subscripting on src: src[l.offset..l.offset+l.length].
+ * - observe that dataDeps is a relation from definition to use
+ * - use the Refs.use relation (returned by resolve) to find
+ *   definition locs for a use
+ * - determine syntactic ordering by comparing the .offset field of locs
+ * 
+ * Tip: start with dataDeps only.
+ * 
+ * Optional: hook the analysis up to the type checker to produce a warning
+ * if a question's variable is used before it is defined.
  */
-str rename(str src, loc name, str new, Refs r) {
-  return src;
-}
  
+ set[loc] usedBeforeDefined(Form f) {
+   return {};
+ }
+
+ /* Exercise 8 (transformation): transform a form so that no dependency
+  * ordering constraints are violated by textual occurrence.
+  *
+  * Example:
+  *   "q1" q1: int = 2 * q2
+  *   "q2" q2: int
+  * Should be transformed to:
+  *   "q2" q2: int
+  *   "q1" q1: int = 2 * q2
+  * 
+  * 
+  */
+
+Form reorder(Form f) {
+  return f;
+}  

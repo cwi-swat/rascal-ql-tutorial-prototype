@@ -1,4 +1,4 @@
-module Flatten
+module Normalize
 
 import AST;
 
