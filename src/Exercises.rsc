@@ -8,6 +8,23 @@ import String;
 import FormatExpr;
 
 /*
+ * Exercise 0: FizzBuzz (see http://c2.com/cgi/wiki?FizzBuzzTest)
+ *
+ * "Write a program that prints the numbers from 1 to 100. 
+ * But for multiples of three print “Fizz” instead of the 
+ * number and for the multiples of five print “Buzz”. For 
+ * numbers which are multiples of both three and five print
+ * “FizzBuzz”."
+ *
+ * Tip: [1..101] gives the list [1,2,3,...,100]
+ * Tip: use println from IO to print.
+ */
+ 
+void fizzBuzz() {
+
+}
+
+/*
  * Exercise 1: add an unless statement which is to be used
  * similar to ifThen statements: unless (x > 1) { "Q?" q: int }
  *
@@ -53,6 +70,27 @@ Form desugar(Form f) {
  *   DateValueWidgets (see resources/js/framework/value-widgets.js)
  *
  */
+ 
+ 
+/* Exercise: normalize forms
+ *
+ * Questionnaires can be represented in "normal form",
+ * that is, as a flat list of ifThen questions with a 
+ * single questin body (i.e. question or computed,
+ * but not group).
+ *
+ * - write a recursive function that flattens a form
+ * - pass conditions down ifThen/ifThenElse bodies
+ * - use a reducer ( init | it + ... | ... <- .. ) to
+ *   flatten groups
+ * - use the + operator to concatenate lists
+ * - use pattern-based dispatch for case distinction
+ */
+ 
+list[Question] flatten(form(_, qs))
+  = flatten(group(qs), \true());
+ 
+
 
 alias Node = tuple[loc id, str label];
 alias Deps = rel[Node from, Node to];
@@ -64,6 +102,17 @@ Deps dataDeps(Form f)
 
 Deps controlDeps(Form f) {
   return {};
+  g = {};
+  
+  set[Id] definedIn(Question q) = { d.name | /Question d := q, d has name };
+  
+  top-down visit (f) {
+    case ifThen(c, q): 
+      g += { <nodeFor(x), nodeFor(y)> | /Id x := c, y <- definedIn(q) };
+    case ifThenElse(c, q1, q2): 
+      g += { <nodeFor(x), nodeFor(y)> | /Id x := c, y <- definedIn(q1) + definedIn(q2) };
+  }
+  return g;
 }
 
 bool hasCycles(Form f) {
