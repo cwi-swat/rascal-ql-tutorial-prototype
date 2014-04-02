@@ -30,7 +30,7 @@ set[Message] tc(question(l, n, _), Info i) = tcq(l, n, i);
 default set[Message] tc(Question _, Info _) = {};
 
 set[Message] tcq(str l, Id n, Info i)
-  = { error("Redeclared with different type", n@location) | hasMultipleTypes(n@location, i) }
+  = { error("Redeclaration", n@location) | hasMultipleTypes(n@location, i) }
   + { warning("Duplicate label", n@location) | hasDuplicateLabel(l, i) }
   ;
 

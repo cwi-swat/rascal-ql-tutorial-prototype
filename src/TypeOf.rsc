@@ -4,7 +4,7 @@ import AST;
 import Resolve;
 import Node;
 
-// Extend with numeric and error
+// Extend QType with numeric (above money/integer) and error (top)
 data QType = numeric() | error();
   
 str type2str(QType t) = getName(t);

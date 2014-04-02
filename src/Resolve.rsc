@@ -8,7 +8,7 @@ import List;
 import Set;
 
 alias Use = rel[loc use, loc def];
-alias Def = rel[loc def, QType tipe];
+alias Def = lrel[loc def, QType tipe];
 
 alias Refs = tuple[Use use, Def def];
 
