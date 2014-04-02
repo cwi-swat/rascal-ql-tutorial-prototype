@@ -150,6 +150,8 @@ Deps controlDeps(Form f) {
  * - use transitive reflexive closure R* 
  *
  * Optional: compute the Nodes involved in a cycle (if any).
+ * Optional: producing a set[Message] for such nodes 
+ * and hook it up to the type checker (Check). 
  */
 
 bool hasCycles(Form f) {
@@ -191,7 +193,6 @@ bool hasCycles(Form f) {
   * Should be transformed to:
   *   "q2" q2: int
   *   "q1" q1: int = 2 * q2
-  * 
   * 
   */
 
