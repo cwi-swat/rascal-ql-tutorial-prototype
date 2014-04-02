@@ -10,9 +10,9 @@ import IO;
 private loc HTML_TEMPLATE = |project://RascalQLTutorial/resources/qltemplate.html|;
 
 // Assumes normalization
-str questions2js(list[Question] qs) =
+str questions2js(str name, list[Question] qs) =
   "$(document).ready(function () {
-  '  var form = new QLrt.FormWidget({ name: \"<f.name>\", submitCallback: persist});
+  '  var form = new QLrt.FormWidget({ name: \"<name>\", submitCallback: persist});
   '  <for (q <- qs) {>
   '  <question2decl(q, "form")>
   '  <}>
@@ -55,10 +55,10 @@ private map[Question,int] IDS = ();
 private int QID = 0;
 str nameFor(Question q) {
   if (q notin IDS) {
-    names[q] = QID;
+    IDS[q] = QID;
     QID += 1;
   }
-  return "q$<names[q]>";
+  return "q$<IDS[q]>";
 }
 
 str type2widget(QType::boolean()) = "BooleanValueWidget";

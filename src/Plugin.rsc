@@ -8,6 +8,7 @@ import Outline;
 import Compile;
 import Normalize;
 import Exercises;
+import AST;
 
 import ParseTree;
 import util::IDE;
@@ -46,9 +47,9 @@ public void main() {
       if (msgs == {}) {
         qs = normalize(desugar(ast));
         js = pt@\loc[extension="js"];
-        writeFile(js, questions2js(qs));
+        writeFile(js, questions2js(ast.name, qs));
         html = pt@\loc[extension="html"];
-        writeFile(html, form2html(f.name, js));
+        writeFile(html, form2html(ast.name, js));
       }
       return msgs;
     }),

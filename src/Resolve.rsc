@@ -18,7 +18,7 @@ alias Info = tuple[Refs refs, Labels labels];
 Info resolve(Form f) {
   // Lazy because of declare after use.
   map[loc, set[loc]()] useLazy = ();
-  Def def = {};
+  Def def = [];
   Labels labels = {};
   
   rel[Id, loc] env = {};	
@@ -36,7 +36,7 @@ Info resolve(Form f) {
   
   void addDef(Id n, loc q, QType t) {
     env += {<n, q>};
-    def += {<q, t>};
+    def += [<q, t>];
   }
   
   visit (f) {

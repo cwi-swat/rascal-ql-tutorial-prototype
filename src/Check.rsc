@@ -7,6 +7,7 @@ import CheckExpr;
 import Message;
 import Relation;
 import Set;
+import List;
 import IO;
 
 set[Message] checkForm(Form f, Info i) = tc(f, i); 
