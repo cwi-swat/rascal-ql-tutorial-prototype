@@ -8,7 +8,8 @@ import String;
 import FormatExpr;
 
 /*
- * Exercise 0: FizzBuzz (see http://c2.com/cgi/wiki?FizzBuzzTest)
+ * Exercise 0 (warm-up): FizzBuzz 
+ * (see http://c2.com/cgi/wiki?FizzBuzzTest)
  *
  * "Write a program that prints the numbers from 1 to 100. 
  * But for multiples of three print “Fizz” instead of the 
@@ -25,7 +26,7 @@ void fizzBuzz() {
 }
 
 /*
- * Exercise 1 (extension): add an unless statement which is to be used
+ * Exercise 1 (evolution): add an unless statement which is to be used
  * similar to ifThen statements: unless (x > 1) { "Q?" q: int }
  *
  * - add a production to Question in QL.rsc
@@ -46,7 +47,7 @@ void fizzBuzz() {
  */
 
 /* 
- * Exercise 2 (extension): add support for date valued questions
+ * Exercise 2 (evolution): add support for date valued questions
  *
  * - add syntax to QType to allow date fields (QL.rsc)
  * - add new QType constructor for dates (AST.rsc)
@@ -60,6 +61,11 @@ void fizzBuzz() {
 /*
  * Exercise 3 (transformation): explicit desugaring of unless to ifThen
  *
+ * Warm up: use visit to
+ *  - print out all labels in a form
+ *  - count all questions (question/computed)
+ *
+ * Desugar:
  * - use `visit` to traverse and rewrite the Form
  * - use pattern matching to match on unless nodes.
  * - rewrite unless nodes to ifThen using =>
@@ -79,6 +85,8 @@ Form desugar(Form f) {
 /* 
  * Exercise 4: Implement a rename refactoring
  * 4a (analysis): compute all locations referencing/referenced by a name loc
+ *
+ * Warm up
  *
  * This exercise amounts to computing an equivalence class over the use-def
  * relation `use` which is declared as `rel[loc use, loc def]`.
@@ -150,8 +158,8 @@ Deps controlDeps(Form f) {
  * - use transitive reflexive closure R* 
  *
  * Optional: compute the Nodes involved in a cycle (if any).
- * Optional: producing a set[Message] for such nodes 
- * and hook it up to the type checker (Check). 
+ * Optional: produce a set[Message] for such nodes 
+ * and hook it up to the type checker (Check.rsc). 
  */
 
 bool hasCycles(Form f) {
