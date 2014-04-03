@@ -6,7 +6,8 @@ import Resolve;
 import CheckExpr;
 import Message;
 
-Types typeEnv(Form f) = [ <q.name@location, q.tipe> | /Question q := f ]; 
+Types typeEnv(Form f) 
+  = { <q.name@location, q.tipe> | /Question q := f, q has name }; 
 
 set[Message] checkForm(Form f, Names names) = tc(f, <names, typeEnv(f)>); 
 

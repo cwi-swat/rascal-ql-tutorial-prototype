@@ -23,6 +23,7 @@ str questions2js(str name, list[Question] qs) =
   '  }
   '});";
 
+
 str question2decl(qc:ifThen(e, q), str parent) 
   = "var <nameFor(qc)> = <cond2group(e, parent)>;
     '<question2decl(q, nameFor(qc))>";

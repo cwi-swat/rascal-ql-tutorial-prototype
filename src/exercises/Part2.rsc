@@ -32,6 +32,7 @@ import FormatExpr;
  */
 
 Form desugar(Form f) {
+  return f;
 }
 
 
