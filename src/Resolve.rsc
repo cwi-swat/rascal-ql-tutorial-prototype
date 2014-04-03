@@ -7,52 +7,27 @@ import ParseTree;
 import List;
 import Set;
 
-alias Use = rel[loc use, loc def];
-alias Def = lrel[loc def, QType tipe];
+alias Names = rel[loc use, loc def];
 
-alias Refs = tuple[Use use, Def def];
-
-alias Labels = rel[str label, loc question];
-alias Info = tuple[Refs refs, Labels labels];
-
-Info resolve(Form f) {
+Names resolve(Form f) {
   // Lazy because of declare after use.
   map[loc, set[loc]()] useLazy = ();
-  Def def = [];
-  Labels labels = {};
-  
   rel[Id, loc] env = {};	
   
-  // Return a function to look up decls of `n` in defs
+  // Return a function to look up decls of `n` in env
   set[loc]() lookup(Id n) = set[loc]() { return env[n]; };
 
-  void addUse(loc l, Id name) {
-    useLazy[l] = lookup(name);
-  }
-  
-  void addLabel(str label, loc l) {
-    labels += {<label, l>};
-  }
-  
-  void addDef(Id n, loc q, QType t) {
+  void addDef(Id n, loc q) {
     env += {<n, q>};
-    def += [<q, t>];
   }
   
   visit (f) {
-    case var(x): addUse(x@location, x); 
-    case question(l, x, t): {
-      addLabel(l, x@location);
-      addDef(x, x@location, t);
-    }
-    case computed(l, x, t, e): {
-      addLabel(l, x@location); 
-      addDef(x, x@location, t);
-    }
+    case var(x): useLazy[x@location] = lookup(x);
+    case question(l, x, _): addDef(x, x@location);
+    case computed(l, x, _, _): addDef(x, x@location);
   }
   
   // Force the closures in `useLazy` to resolve references.
-  use = { <u, d>  | u <- useLazy, d <- useLazy[u]() };
-  
-  return <<use, def>, labels>;
+  return { <u, d>  | u <- useLazy, d <- useLazy[u]() };
 }
+

@@ -10,7 +10,12 @@ import Set;
 import List;
 import IO;
 
-set[Message] checkForm(Form f, Info i) = tc(f, i); 
+alias Info = tuple[Names names, Types tenv];
+alias Types = rel[loc name, QType tipe];
+
+Types typeEnv(Form f) = [ <q.name@location, q.tipe> | /Question q := f ]; 
+
+set[Message] checkForm(Form f, Names names) = tc(f, <names, typeEnv(f)>); 
 
 set[Message] tc(Form f, Info i) = ( {} | it + tc(q, i) | q <- f.body );
 
@@ -24,18 +29,7 @@ set[Message] tc(ifThenElse(c, q1, q2), Info i) = tci(c, i) + tc(q1, i) + tc(q2, 
 
 set[Message] tc(Question::group(qs), Info i) = ( {} | it + tc(q, i) |  q <- qs );
 
-set[Message] tc(computed(l, n, _, e), Info i) = tcq(l, n, i) + tc(e ,i);
-
-set[Message] tc(question(l, n, _), Info i) = tcq(l, n, i); 
+set[Message] tc(computed(l, n, _, e), Info i) = tc(e ,i);
 
 default set[Message] tc(Question _, Info _) = {};
-
-set[Message] tcq(str l, Id n, Info i)
-  = { error("Redeclaration", n@location) | hasMultipleTypes(n@location, i) }
-  + { warning("Duplicate label", n@location) | hasDuplicateLabel(l, i) }
-  ;
-
-bool hasMultipleTypes(loc x, Info i) = size(i.refs.def[x]) > 1;
-
-bool hasDuplicateLabel(str l, Info i) = size(i.labels[l]) > 1;
 

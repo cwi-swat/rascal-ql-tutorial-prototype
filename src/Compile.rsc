@@ -40,15 +40,15 @@ str question2widget(str l, Id v, QType t, str parent, str e)
     '  valueWidget: new QLrt.<type2widget(t)>(<e>) 
     '}).appendTo(<parent>);";
 
-str cond2group(Expr e, str parent)
-  = "new QLrt.ConditionalGroupWidget(<exp2lazyValue(e)>).appendTo(<parent>)";
-    
 str exp2lazyValue(Expr e) 
   = "new QLrt.LazyValue(
     '  function () { return [<ps>]; },
     '  function (<ps>) { return <expr2js(e)>; }
     ')"
   when str ps := expParams(e);
+    
+str cond2group(Expr e, str parent)
+  = "new QLrt.ConditionalGroupWidget(<exp2lazyValue(e)>).appendTo(<parent>)";
     
 
 private map[Question,int] IDS = ();

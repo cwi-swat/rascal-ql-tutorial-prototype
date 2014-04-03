@@ -1,8 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: RascalQLTutorial
-Bundle-SymbolicName: RascalQLTutorial
+Bundle-SymbolicName: RascalQLTutorial;singleton:=true
 Bundle-Version: 1.0.0
 Require-Bundle: org.eclipse.imp.pdb.values,
- rascal
+ rascal,
+ rascal_eclipse
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
