@@ -1,5 +1,13 @@
 module exercises::Part2
 
+import AST;
+import Resolve;
+import IO;
+import List;
+import String;
+import FormatExpr;
+
+
 /*
  * Exercise 3 (transformation): explicit desugaring of unless to ifThen
  *
