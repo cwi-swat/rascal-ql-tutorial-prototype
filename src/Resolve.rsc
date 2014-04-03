@@ -17,13 +17,11 @@ Names resolve(Form f) {
   // Return a function to look up decls of `n` in env
   set[loc]() lookup(Id n) = set[loc]() { return env[n]; };
 
-  void addDef(Id n, loc q) {
-    env += {<n, q>};
-  }
+  void addDef(Id n, loc q) { env += {<n, q>}; }
   
   visit (f) {
     case var(x): useLazy[x@location] = lookup(x);
-    case question(l, x, _): addDef(x, x@location);
+    case question(l, x, _):    addDef(x, x@location);
     case computed(l, x, _, _): addDef(x, x@location);
   }
   

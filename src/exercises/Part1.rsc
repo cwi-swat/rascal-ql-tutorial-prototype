@@ -48,8 +48,6 @@ void fizzBuzz() {
  * Optional: fix the outliner (Outline) so that unless conditions 
  * appears in the outline
  * 
- * Optional: add conditional expression x ? y : z
- *  (affects: QL, AST, CheckExpr, TypeOf, Expr2JS)
  */
 
 /* 
@@ -62,6 +60,18 @@ void fizzBuzz() {
  *
  */
  
+/*
+ * Exercise 3 (evolution): add a conditional expression x ? y : z
+ *  
+ *  - add production to Expr (QL.rsc)
+ *    (Make sure it's low in the priority hierarchy
+ *     i.e. x && y ? a : b  is equal to (x && y) ? a : b.) 
+ *  - add new Expr constructor in AST.rsc
+ *  - add new case to typeOf in TypeOf.rsc
+ *  - add new case to tc in CheckExpr.rsc
+ *  - add new case to expr2js in Expr2JS.rsc
+ */
+
  
 
 /*

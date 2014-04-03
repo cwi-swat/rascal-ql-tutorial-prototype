@@ -23,56 +23,10 @@ Form desugar(Form f) {
 }
 
 
-/* 
- * Exercise 4: Implement a rename refactoring
- * 4a (analysis): compute all locations referencing/referenced by a name loc
- *
- * Warm up:
- * - call resolve(loadExample("tax.tql")) and extract the Use component from
- *   the result (Refs).
- * - click on the locations to see where they point
- * - count the number of uses (references) and defs (declarations)
- *   (use size from the standard module Set)
- *
- * This exercise amounts to computing the equivalence relation of the use-def
- * relation `Ref.use` which is declared as `rel[loc use, loc def]`.
- * (See http://en.wikipedia.org/wiki/Equivalence_relation)
- *
- * - get the use relation from Refs, returned from resolve (Resolve.rsc)
- * - use a comprehension to compute the symmetric closure of a relation
- *   (symmetric closure means <x, y> in the relation if also <y, x>)
- * - use R* to compute the reflexive, transitive closure of a relation
- * - use the "image" R[x] to compute all locs equivalent to `name`.
- */ 
-
-set[loc] eqClass(loc name, rel[loc use, loc def] use) {
-  return {};
-}
-
-/*
- * Exercise 4: Implement a rename refactoring
- * 4b (transformation): substitute all names in the input source
- *
- * - construct a renaming map map[loc, str] based on the result of 4a
- * - use the function substitute(src, map[loc, str]) from String
- * - observe the effect of rename by selecting an identifier
- *   in a TQL editor, and richt-click, select Rename... in the
- *   context menu.
- *
- * Optional: implement the rename refactoring, but now on ASTs.
- * Use format (Format to see the result of your refactoring.)
- * 
- * Optional: check as precondition that `newName` isn't
- * already used. Retrieve the name at a location by 
- * subscripting on src: src[l.offset..l.offset+l.length].
- */
-str rename(str src, loc toBeRenamed, str newName, rel[loc use, loc def] use) {
-  return src;
-}
  
  
  /*
- * Exercise 5 (analysis): extract control dependencies.
+ * Exercise 4 (analysis): extract control dependencies.
  *
  * Warm up:
  * - use deep matching (using /) to find a variables in a form
@@ -110,7 +64,7 @@ Deps controlDeps(Form f) {
 }
 
 /*
- * Exercise 6 (analysis): cycle detection
+ * Exercise 5 (analysis): cycle detection
  *
  * - detect cycles in a form using dataDeps and controlDeps
  * - first lift a Deps relation to rel[str, str]
@@ -123,4 +77,52 @@ Deps controlDeps(Form f) {
 
 bool hasCycles(Form f) {
   return false;
+}
+
+
+/* 
+ * Exercise 6: Implement a rename refactoring
+ * 6a (analysis): compute all locations referencing/referenced by a name loc
+ *
+ * Warm up:
+ * - call resolve(loadExample("tax.tql")) and extract the Use component from
+ *   the result (Refs).
+ * - click on the locations to see where they point
+ * - count the number of uses (references) and defs (declarations)
+ *   (use size from the standard module Set)
+ *
+ * This exercise amounts to computing the equivalence relation of the use-def
+ * relation `Ref.use` which is declared as `rel[loc use, loc def]`.
+ * (See http://en.wikipedia.org/wiki/Equivalence_relation)
+ *
+ * - get the use relation from Refs, returned from resolve (Resolve.rsc)
+ * - use a comprehension to compute the symmetric closure of a relation
+ *   (symmetric closure means <x, y> in the relation if also <y, x>)
+ * - use R* to compute the reflexive, transitive closure of a relation
+ * - use the "image" R[x] to compute all locs equivalent to `name`.
+ */ 
+
+set[loc] eqClass(loc name, rel[loc use, loc def] use) {
+  return {};
+}
+
+/*
+ * Exercise 6: Implement a rename refactoring
+ * 6b (transformation): substitute all names in the input source
+ *
+ * - construct a renaming map map[loc, str] based on the result of 4a
+ * - use the function substitute(src, map[loc, str]) from String
+ * - observe the effect of rename by selecting an identifier
+ *   in a TQL editor, and richt-click, select Rename... in the
+ *   context menu.
+ *
+ * Optional: implement the rename refactoring, but now on ASTs.
+ * Use format (Format to see the result of your refactoring.)
+ * 
+ * Optional: check as precondition that `newName` isn't
+ * already used. Retrieve the name at a location by 
+ * subscripting on src: src[l.offset..l.offset+l.length].
+ */
+str rename(str src, loc toBeRenamed, str newName, rel[loc use, loc def] use) {
+  return src;
 }
