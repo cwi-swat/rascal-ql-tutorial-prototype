@@ -21,8 +21,8 @@ Names resolve(Form f) {
   
   visit (f) {
     case var(x): useLazy[x@location] = lookup(x);
-    case question(l, x, _):    addDef(x, x@location);
-    case computed(l, x, _, _): addDef(x, x@location);
+    case question(_, x, _):    addDef(x, x@location);
+    case computed(_, x, _, _): addDef(x, x@location);
   }
   
   // Force the closures in `useLazy` to resolve references.

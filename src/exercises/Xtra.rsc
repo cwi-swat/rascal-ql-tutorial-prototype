@@ -1,4 +1,4 @@
-module exercises::Extra
+module exercises::Xtra
 
 import AST;
 import Resolve;

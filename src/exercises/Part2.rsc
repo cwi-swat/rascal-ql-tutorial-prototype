@@ -11,8 +11,12 @@ import FormatExpr;
 /*
  * Exercise 3 (transformation): explicit desugaring of unless to ifThen
  *
+ * Example of visit:
+ *  - Resolve.rsc
+ *  - Outline.rsc
+ * 
  * Warm up: use visit to
- *  - print out all labels in a form
+ *  - println out all labels in a form
  *  - count all questions (question/computed)
  *
  * Desugar:
@@ -41,12 +45,16 @@ Form desugar(Form f) {
  * - use deep match to find all question with label value (within 
  *   the quotes) equal to name; make sure there such labels in
  *   your test code.
+ * 
+ * Examples of deep match
+ * - freeVars in Compile.rsc
+ * - typeEnv in Check.rsc
  *
  * Exercise:
  *
  * - use the Node and Deps data types and nodeFor function shown below
  * - visit the form, and when encountering ifThen/ifThenElse
- * - record an edge (tuple) between each Id used in the condition
+ *   record an edge (tuple) between each Id used in the condition
  *   and each Id defined in the body/bodies.
  * - use deep match (/p) to find Ids in expressions
  *
@@ -103,14 +111,14 @@ bool hasCycles(Form f) {
  * relation `Ref.use` which is declared as `rel[loc use, loc def]`.
  * (See http://en.wikipedia.org/wiki/Equivalence_relation)
  *
- * - get the use relation from Refs, returned from resolve (Resolve.rsc)
+ * - obtain the names relation by calling resolve on an AST (Resolve.rsc)
  * - use a comprehension to compute the symmetric closure of a relation
  *   (symmetric closure means <x, y> in the relation if also <y, x>)
  * - use R* to compute the reflexive, transitive closure of a relation
  * - use the "image" R[x] to compute all locs equivalent to `name`.
  */ 
 
-set[loc] eqClass(loc name, rel[loc use, loc def] use) {
+set[loc] eqClass(loc nameOccurrence, rel[loc use, loc def] names) {
   return {};
 }
 
@@ -124,12 +132,13 @@ set[loc] eqClass(loc name, rel[loc use, loc def] use) {
  *   in a TQL editor, and richt-click, select Rename... in the
  *   context menu.
  *
- * Optional: implement the rename refactoring, but now on ASTs.
- * Use format (Format to see the result of your refactoring.)
- * 
  * Optional: check as precondition that `newName` isn't
  * already used. Retrieve the name at a location by 
  * subscripting on src: src[l.offset..l.offset+l.length].
+ *
+ * Optional: implement the rename refactoring, but now on ASTs.
+ * Use format (Format to see the result of your refactoring.)
+ * Why is this approach problematic for implementing refactorings?
  */
 str rename(str src, loc toBeRenamed, str newName, rel[loc use, loc def] use) {
   return src;

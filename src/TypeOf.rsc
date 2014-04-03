@@ -4,6 +4,9 @@ import AST;
 import Resolve;
 import Node;
 
+alias Info = tuple[Names names, Types tenv];
+alias Types = rel[loc name, QType tipe];
+
 // Extend QType with numeric (above money/integer) and error (top)
 data QType = numeric() | error();
   

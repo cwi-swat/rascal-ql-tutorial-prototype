@@ -5,13 +5,6 @@ import TypeOf;
 import Resolve;
 import CheckExpr;
 import Message;
-import Relation;
-import Set;
-import List;
-import IO;
-
-alias Info = tuple[Names names, Types tenv];
-alias Types = rel[loc name, QType tipe];
 
 Types typeEnv(Form f) = [ <q.name@location, q.tipe> | /Question q := f ]; 
 

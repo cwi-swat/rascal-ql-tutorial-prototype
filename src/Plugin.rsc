@@ -7,7 +7,8 @@ import Check;
 import Outline;
 import Compile;
 import Normalize;
-import Exercises;
+import exercises::Part1;
+import exercises::Part2;
 import AST;
 
 import ParseTree;
@@ -18,10 +19,7 @@ import IO;
 
 private str TQL ="Tutorial QL";
 
-anno rel[loc,loc, str] Tree@hyperlinks;
-
-rel[loc,loc,str] computeXRef(Info i) 
-  = { <u, d, "<l>"> | <u, d> <- i.refs.use, <l, d> <- i.labels }; 
+anno rel[loc, loc] Tree@hyperlinks;
 
 public void main(list[value] args) {
   registerLanguage(TQL, "tql", Tree(str src, loc l) {
@@ -36,9 +34,9 @@ public void main(list[value] args) {
     
     annotator(Tree(Tree pt) {
       ast = implodeQL(pt);
-      inf = resolve(ast);
-      msgs = checkForm(ast, inf);
-      return pt[@messages=msgs][@hyperlinks=computeXRef(inf)];
+      ref = resolve(ast);
+      msgs = checkForm(ast, ref);
+      return pt[@messages=msgs][@hyperlinks=ref];
     }),
     
     builder(set[Message] (Tree pt) {
@@ -58,8 +56,8 @@ public void main(list[value] args) {
       menu("Tutorial QL", [
         edit("Rename...", str (Tree pt, loc selection) {
           ast = implodeQL(pt);
-          refs = resolve(ast).refs;
-          names = { u | u <- refs.use<0> + refs.use<1>, selection <= u };
+          refs = resolve(ast);
+          names = { u | u <- refs<0> + refs<1>, selection <= u };
           if ({loc name} := names) {
             new = prompt("Enter a new name: ");
             return rename(unparse(pt),  name, new, refs);
