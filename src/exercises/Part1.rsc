@@ -73,6 +73,33 @@ void fizzBuzz() {
  *  - add new case to tc in CheckExpr.rsc
  *  - add new case to expr2js in Expr2JS.rsc
  */
-
  
 
+ /*
+ * Exercise 4 (transformation): explicit desugaring of unless to ifThen
+ *
+ * Example of visit:
+ *  - Resolve.rsc
+ *  - Outline.rsc
+ * 
+ * Warm up: use visit to
+ *  - println out all labels in a form
+ *  - count all questions (question/computed)
+ *
+ * Desugar:
+ * - use `visit` to traverse and rewrite the Form
+ * - use pattern matching to match on unless nodes.
+ * - rewrite unless nodes to ifThen using =>
+ *
+ * The desugar function is called before compilation
+ * so the compiler (Compile) does not have to be changed
+ * to support unless, even if no normalize() was used.
+ *
+ * Optional: add unlessElse, and desugar it to ifThenElse
+ */
+
+Form desugar(Form f) {
+  return f;
+}
+
+ 
