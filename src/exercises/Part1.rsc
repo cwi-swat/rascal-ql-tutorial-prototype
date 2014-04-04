@@ -25,6 +25,13 @@ void fizzBuzz() {
 
 }
 
+
+/*
+ * General note: press the Reload icon in the toolbar of the Rascal
+ * perspective to reload your change language implementation in
+ * editors (next to the Rascal icons).
+ */
+
 /*
  * Exercise 1 (evolution): add an unless statement which is to be used
  * similar to ifThen statements: 
