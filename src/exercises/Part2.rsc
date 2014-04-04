@@ -96,7 +96,6 @@ bool hasCycles(Form f) {
   return false;
 }
 
-
 /* 
  * Exercise 6: Implement a rename refactoring
  * 6a (analysis): compute all locations referencing/referenced by a name loc
