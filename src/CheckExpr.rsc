@@ -31,7 +31,6 @@ set[Message] tc(Expr::money(_), Info i) = {};
 set[Message] tc(Expr::\true(), Info i) = {};
 set[Message] tc(Expr::\false(), Info i) = {};
 
-// Default is broken (?)
 default set[Message] tc(Expr e, Info i) 
   = {error("Unknown expression construct", e@location)};  
 
