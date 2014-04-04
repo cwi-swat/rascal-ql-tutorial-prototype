@@ -23,6 +23,7 @@ anno rel[loc, loc] Tree@hyperlinks;
 
 public void main() { 
   registerLanguage(TQL, "tql", Tree(str src, loc l) {
+    println("Hoi");
     return parseQL(src, l);
   });
   
