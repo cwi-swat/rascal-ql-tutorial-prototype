@@ -21,9 +21,9 @@ void snippets() {
   println(format(ast));
   
   // Perform name resolution (click on the locations to jump to names) 
-  refs = resolve(ast);
+  resolve(ast);
   
-  // Type check a questionnaire
+  // Type check a questionnaire (click on locations to jump to editor)
   check(ast);
   
   // Normalize the questionnaire

@@ -1,22 +1,19 @@
 form taxOfficeExample { 
   // another comment
+
   "Did you buy a house in 2010?"
     hasBoughtHouse: boolean
-
-  // two comments more
-  // two comments more
-
- 
+    
   "Did you enter a loan?"
     hasMaintLoan: boolean
-   
+    
   "Bla"
     bla: boolean
-    
+
   if (hasSoldHouse) {
     // selling price
     "What was the selling price?"
-      sellingPrice: money
+      sellingPrice: money = valueResidue
     "Private debts for the sold house:"
       privateDebt: money
     "Value residue:"

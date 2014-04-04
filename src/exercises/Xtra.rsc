@@ -6,7 +6,7 @@ import IO;
 import List;
 import String;
 import FormatExpr;
-
+import analysis::graphs::Graph;
 
 /*
  * Exercise 8 (analysis): identify use-before-defined questions
@@ -18,14 +18,10 @@ import FormatExpr;
  *   "q2" q2: int
  * generate the location of q2
  *
- * - observe that dataDeps is a relation from definition to use
- *   and that Refs.use is a relation from use to definition.
- * - use the Refs.use relation (returned by resolve) to find
- *   definition locs for a use
- * - determine syntactic ordering by comparing the .offset field of locs
- * 
- * Tip: use relation composition (o) on dataDeps and use to get
- * a relation from definition to definition.
+ * - use the resolved relation of Exercise 6 to find the
+ *   the order required by the dependencies (use the order()
+ *   function to compute topological order). 
+ * - determine textual ordering by comparing the .offset field of locs
  * 
  * Optional: hook the analysis up to the type checker to produce a warning
  * if a question's variable is used before it is defined.
