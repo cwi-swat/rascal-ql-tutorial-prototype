@@ -10,7 +10,9 @@ import IO;
 Types typeEnv(Form f) 
   = { <q.name@location, q.tipe> | /Question q := f, q has name }; 
 
-set[Message] checkForm(Form f, Names names) = tc(f, <names, typeEnv(f)>); 
+set[Message] check(Form f) = check(f, resolve(f));
+
+set[Message] check(Form f, Names names) = tc(f, <names, typeEnv(f)>); 
 
 set[Message] tc(Form f, Info i) = ( {} | it + tc(q, i) | q <- f.body );
 

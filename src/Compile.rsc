@@ -2,6 +2,7 @@ module Compile
 
 import AST;
 import Expr2JS;
+import Normalize;
 import Set;
 import List;
 import String;
@@ -9,8 +10,11 @@ import IO;
 
 private loc HTML_TEMPLATE = |project://RascalQLTutorial/resources/qltemplate.html|;
 
-// Assumes normalization
-str questions2js(str name, list[Question] qs) =
+// Compile assumes normalization
+
+str compile(Form f) = questions2js(normalize(f));
+
+str questions2js(form(name, qs)) =
   "$(document).ready(function () {
   '  var form = new QLrt.FormWidget({ name: \"<name>\", submitCallback: persist});
   '  <for (q <- qs) {>

@@ -6,6 +6,7 @@ import IO;
 import List;
 import String;
 import FormatExpr;
+import Message;
 
  /*
  * Exercise 5 (analysis): extract control dependencies.
@@ -45,25 +46,22 @@ Node nodeFor(Id x) = <x@location, x.name>;
 Deps dataDeps(Form f) 
   = { <nodeFor(x), nodeFor(y)> | /computed(_, x, _, e) := f, /Id y := e };
 
-Deps controlDeps(Form f) {
+/*
+ * Observe that dataDeps returns a relation from definitions
+ * of (computed) questions to uses of variables (question names).
+ * Uses and definitions, however, are not connected in the graph.
+ * Write a function `resolve`, which adds tuples <u, d> between
+ * any <u, d> in dataDeps that have the same label. 
+ */
+
+Deps resolve(Deps deps) {
+  return deps;
+}
+
+set[Message] cyclicErrors(Form f) {
   return {};
 }
 
-/*
- * Exercise 6 (analysis): cycle detection
- *
- * - detect cycles in a form using dataDeps and controlDeps
- * - first lift a Deps relation to rel[str, str]
- * - use transitive reflexive closure R* 
- *
- * Optional: compute the Nodes involved in a cycle (if any).
- * Optional: produce a set[Message] for such nodes 
- * and hook it up to the type checker (Check.rsc). 
- */
-
-bool hasCycles(Form f) {
-  return false;
-}
 
 /* 
  * Exercise 7: Implement a rename refactoring
@@ -109,5 +107,7 @@ set[loc] eqClass(loc nameOccurrence, rel[loc use, loc def] names) {
  * Why is this approach problematic for implementing refactorings?
  */
 str rename(str src, loc toBeRenamed, str newName, rel[loc use, loc def] use) {
-  return src;
+  equiv = eqClass(toBeRenamed, use);
+  renaming = ( l: newName | l <- equiv );
+  return substitute(src, renaming);
 }

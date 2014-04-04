@@ -2,6 +2,9 @@ module Normalize
 
 import AST;
 
+Form normalizeForm(f:form(n, qs))
+  = form(n, normalize(f));
+
 /*
  * Normalize a Form to a flat list
  * of ifThen questions, the body of
@@ -9,8 +12,8 @@ import AST;
  * elements.
  */
 
-list[Question] normalize(form(_, qs))
-  = normalize(group(qs), \true());
+Form normalize(form(n, qs))
+  = form(n, normalize(group(qs), \true()));
  
 list[Question] normalize(group(qs), Expr e)
   = ( [] | it + normalize(q, e) | q <- qs );

@@ -6,7 +6,7 @@ import FormatExpr;
 
 import lang::box::util::SimpleBox;
 
-str formatForm(Form f) = format(format(f));
+str format(Form f) = format(format_(f));
 
 /* 
  * Formatting using Box (see lang::box::util::SimpleBox)
@@ -15,7 +15,7 @@ str formatForm(Form f) = format(format(f));
  * I: indented composition (in a V, default vs = 1, indent is = 2)
  */
 
-Box format(form(x, qs))
+Box format_(form(x, qs))
   = V(H("form", x, "{", hs=1), I([ format(q) | q <- qs ]), "}");
 
 Box format(question(l, x, t))

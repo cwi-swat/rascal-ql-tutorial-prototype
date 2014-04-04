@@ -7,6 +7,7 @@ import Check;
 import Outline;
 import Compile;
 import Normalize;
+import Visualize;
 import exercises::Part1;
 import exercises::Part2;
 import AST;
@@ -23,7 +24,6 @@ anno rel[loc, loc] Tree@hyperlinks;
 
 public void main() { 
   registerLanguage(TQL, "tql", Tree(str src, loc l) {
-    println("Hoi");
     return parseQL(src, l);
   });
   
@@ -36,17 +36,16 @@ public void main() {
     annotator(Tree(Tree pt) {
       ast = implodeQL(pt);
       ref = resolve(ast);
-      msgs = checkForm(ast, ref);
+      msgs = check(ast, ref);
       return pt[@messages=msgs][@hyperlinks=ref];
     }),
     
     builder(set[Message] (Tree pt) {
       ast = implodeQL(pt);
-      msgs = checkForm(ast, resolve(ast));
+      msgs = check(ast);
       if (msgs == {}) {
-        qs = normalize(desugar(ast));
         js = pt@\loc[extension="js"];
-        writeFile(js, questions2js(ast.name, qs));
+        writeFile(js, compile(desugar(ast)));
         html = pt@\loc[extension="html"];
         writeFile(html, form2html(ast.name, js));
       }
@@ -55,6 +54,10 @@ public void main() {
     
     popup(
       menu("Tutorial QL", [
+        action("Visualize", void (Tree pt, loc selection) {
+          ast = implodeQL(pt);
+          visualize(resolve(dataDeps(ast)));
+        }),
         edit("Rename...", str (Tree pt, loc selection) {
           ast = implodeQL(pt);
           refs = resolve(ast);
