@@ -10,8 +10,6 @@ import IO;
 
 private loc HTML_TEMPLATE = |project://RascalQLTutorial/resources/qltemplate.html|;
 
-// Compile assumes normalization
-
 str compile(Form f) = questions2js(normalize(f));
 
 str questions2js(form(name, qs)) =
