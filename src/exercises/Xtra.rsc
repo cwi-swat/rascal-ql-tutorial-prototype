@@ -9,7 +9,7 @@ import FormatExpr;
 
 
 /*
- * Exercise 7 (analysis): identify use-before-defined questions
+ * Exercise 8 (analysis): identify use-before-defined questions
  * Generate the locations of defined questions used in computed questions
  * before they are textually defined. 
  * 
@@ -35,7 +35,7 @@ import FormatExpr;
    return {};
  }
 
- /* Exercise 8 (transformation): transform a form so that no dependency
+ /* Exercise 9 (transformation): transform a form so that no dependency
   * ordering constraints are violated by textual occurrence.
   *
   * Example:

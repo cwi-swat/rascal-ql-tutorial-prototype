@@ -7,44 +7,13 @@ import List;
 import String;
 import FormatExpr;
 
-
-/*
- * Exercise 3 (transformation): explicit desugaring of unless to ifThen
- *
- * Example of visit:
- *  - Resolve.rsc
- *  - Outline.rsc
- * 
- * Warm up: use visit to
- *  - println out all labels in a form
- *  - count all questions (question/computed)
- *
- * Desugar:
- * - use `visit` to traverse and rewrite the Form
- * - use pattern matching to match on unless nodes.
- * - rewrite unless nodes to ifThen using =>
- *
- * The desugar function is called before compilation
- * so the compiler (Compile) does not have to be changed
- * to support unless, even if no normalize() was used.
- *
- * Optional: add unless-else, and desugar it to ifThenElse
- */
-
-Form desugar(Form f) {
-  return f;
-}
-
-
- 
- 
  /*
- * Exercise 4 (analysis): extract control dependencies.
+ * Exercise 5 (analysis): extract control dependencies.
  *
  * Warm up:
  * - use deep matching (using /) to find a variables in a form
  * - use deep match to find all question with label value (within 
- *   the quotes) equal to name; make sure there such labels in
+ *   the quotes) equal to name; make sure there are such labels in
  *   your test code.
  * 
  * Examples of deep match
@@ -81,7 +50,7 @@ Deps controlDeps(Form f) {
 }
 
 /*
- * Exercise 5 (analysis): cycle detection
+ * Exercise 6 (analysis): cycle detection
  *
  * - detect cycles in a form using dataDeps and controlDeps
  * - first lift a Deps relation to rel[str, str]
@@ -97,12 +66,11 @@ bool hasCycles(Form f) {
 }
 
 /* 
- * Exercise 6: Implement a rename refactoring
- * 6a (analysis): compute all locations referencing/referenced by a name loc
+ * Exercise 7: Implement a rename refactoring
+ * 7a (analysis): compute all locations referencing/referenced by a name loc
  *
  * Warm up:
- * - call resolve(loadExample("tax.tql")) and extract the Use component from
- *   the result (Refs).
+ * - call resolve(loadExample("tax.tql"))
  * - click on the locations to see where they point
  * - count the number of uses (references) and defs (declarations)
  *   (use size from the standard module Set)
@@ -123,10 +91,10 @@ set[loc] eqClass(loc nameOccurrence, rel[loc use, loc def] names) {
 }
 
 /*
- * Exercise 6: Implement a rename refactoring
- * 6b (transformation): substitute all names in the input source
+ * Exercise 7: Implement a rename refactoring
+ * 7b (transformation): substitute all names in the input source
  *
- * - construct a renaming map map[loc, str] based on the result of 4a
+ * - construct a renaming map map[loc, str] based on the result of 7a
  * - use the function substitute(src, map[loc, str]) from String
  * - observe the effect of rename by selecting an identifier
  *   in a TQL editor, and richt-click, select Rename... in the
