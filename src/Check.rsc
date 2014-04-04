@@ -5,6 +5,7 @@ import TypeOf;
 import Resolve;
 import CheckExpr;
 import Message;
+import IO;
 
 Types typeEnv(Form f) 
   = { <q.name@location, q.tipe> | /Question q := f, q has name }; 
@@ -23,7 +24,10 @@ set[Message] tc(ifThenElse(c, q1, q2), Info i) = tci(c, i) + tc(q1, i) + tc(q2, 
 
 set[Message] tc(Question::group(qs), Info i) = ( {} | it + tc(q, i) |  q <- qs );
 
+set[Message] tc(question(l, n, _), Info i) = {};
+
 set[Message] tc(computed(l, n, _, e), Info i) = tc(e ,i);
+
 
 default set[Message] tc(Question q, Info _) 
   = {error("Unrecognized question construct.", q@location)};

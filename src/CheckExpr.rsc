@@ -8,8 +8,8 @@ import Message;
 import Relation;
 import Set;
 
-set[Message] tc(e:var(x), Info i) = {error("Undefined name", e@location)}
-  when i.names[x@location] == {}; 
+set[Message] tc(e:var(x), Info i) 
+  = {error("Undefined name", e@location) | i.names[x@location] == {} };
 
 set[Message] tc(e:eq(lhs, rhs), Info i)  = checkEq(e, i, lhs, rhs);
 set[Message] tc(e:neq(lhs, rhs), Info i) = checkEq(e, i, lhs, rhs);
@@ -31,6 +31,7 @@ set[Message] tc(Expr::money(_), Info i) = {};
 set[Message] tc(Expr::\true(), Info i) = {};
 set[Message] tc(Expr::\false(), Info i) = {};
 
+// Default is broken (?)
 default set[Message] tc(Expr e, Info i) 
   = {error("Unknown expression construct", e@location)};  
 
