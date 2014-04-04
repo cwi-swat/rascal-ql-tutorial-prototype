@@ -25,5 +25,6 @@ set[Message] tc(Question::group(qs), Info i) = ( {} | it + tc(q, i) |  q <- qs )
 
 set[Message] tc(computed(l, n, _, e), Info i) = tc(e ,i);
 
-default set[Message] tc(Question _, Info _) = {};
+default set[Message] tc(Question q, Info _) 
+  = {error("Unrecognized question construct.", q)};
 

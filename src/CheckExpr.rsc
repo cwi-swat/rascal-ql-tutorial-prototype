@@ -26,7 +26,13 @@ set[Message] tc(e:leq(lhs, rhs), Info i) = tc(e, numeric(), i, lhs, rhs);
 set[Message] tc(e:and(lhs, rhs), Info i) = tc(e, boolean(), i, lhs, rhs);
 set[Message] tc(e:or(lhs, rhs), Info i)  = tc(e, boolean(), i, lhs, rhs);
 
-default set[Message] tc(Expr _, Info i) = {}; 
+set[Message] tc(Expr::integer(_), Info i) = {};
+set[Message] tc(Expr::money(_), Info i) = {};
+set[Message] tc(Expr::\true(), Info i) = {};
+set[Message] tc(Expr::\false(), Info i) = {};
+
+default set[Message] tc(Expr e, Info i) 
+  = {error("Unknown expression construct", e@location)};  
 
 //Helper function to do automatic calling of tc on sub-expressions
 // and to prevent type-checking if the sub-expressions have errors.
