@@ -45,7 +45,10 @@ void snippets(str example) {
   // Compile a form
   println(compile(ast));
   
-  // Visualize data dependencies
-  visualize(controlDeps(ast));
+  // Extract control dependencies
+  deps = controlDeps(ast);
+  
+  // Visualize control dependencies
+  visualize(deps);
 }
  

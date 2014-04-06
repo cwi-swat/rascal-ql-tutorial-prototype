@@ -67,7 +67,7 @@ Form desugar(Form f) {
  */
  
 Deps dataDeps(Form f) {
-  return { <nodeFor(x), nodeFor(y)> | /computed(_, x, _, e) := f, /Id y := e };
+  return {};
 }
 
 

@@ -9,5 +9,6 @@ extend Normalize;
 extend Format;
 extend Compile;
 extend Visualize;
+extend Dependencies;
 extend exercises::Part1;
 extend exercises::Part2;
