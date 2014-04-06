@@ -9,17 +9,15 @@ import IO;
 import exercises::ImportThis;
 import util::ValueUI;
 
-void snippets() { snippets("tax.tql"); }
-
 /*
  * Paste statements from below into the console,
  * and see what happens or call the function directly
  * to get a preview of the QL implements
  */
  
-void snippets(str example) {
+void snippets() {
   // Parse a TQL file in the examples directory
-  ast = loadExample(example);
+  ast = loadExample("tax.tql");
   
   // Explore the AST in a browser
   tree(ast);
