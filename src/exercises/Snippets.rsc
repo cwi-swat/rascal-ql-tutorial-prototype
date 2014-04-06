@@ -9,7 +9,7 @@ import IO;
 import exercises::ImportThis;
 import util::ValueUI;
 
-void snippets() { snippets("tax.ql"); }
+void snippets() { snippets("tax.tql"); }
 
 /*
  * Paste statements from below into the console,
