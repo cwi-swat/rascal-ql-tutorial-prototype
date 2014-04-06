@@ -4,8 +4,8 @@ data Form
   = form(str name, list[Question] body);
   
 data Question
-  = question(str label, Id name, QType tipe)
-  | computed(str label, Id name, QType tipe, Expr expr)
+  = question(Label label, Id name, QType tipe)
+  | computed(Label label, Id name, QType tipe, Expr expr)
   | ifThen(Expr cond, Question body)
   | ifThenElse(Expr cond, Question body, Question elseBody)
   | group(list[Question] questions)
@@ -42,7 +42,7 @@ data QType
  ; 
  
 data Id = id(str name);
- 
+data Label = label(str label); 
 
 anno loc Form@location;
 anno loc Id@location;

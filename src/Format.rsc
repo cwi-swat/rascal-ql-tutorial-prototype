@@ -19,10 +19,10 @@ Box format_(form(x, qs))
   = V(H("form", x, "{", hs=1), I([ format(q) | q <- qs ]), "}");
 
 Box format(question(l, x, t))
-  = H(l, H(x.name, ":"), getName(t), hs = 1);
+  = H(l.label, H(x.name, ":"), getName(t), hs = 1);
 
 Box format(computed(l, x, t, e))
-  = H(l, H(x.name, ":"), getName(t), "=", format(e), hs = 1);
+  = H(l.label, H(x.name, ":"), getName(t), "=", format(e), hs = 1);
 
 Box format(group(qs)) = V("{", I([format(q) | q <- qs]), "}");
 

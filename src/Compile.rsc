@@ -36,10 +36,10 @@ str question2decl(question(l, v, t), str parent)
 str question2decl(computed(l, v, t, e), str parent)
   = question2widget(l, v, t, parent, exp2lazyValue(e));
 
-str question2widget(str l, Id v, QType t, str parent, str e)
+str question2widget(Label l, Id v, QType t, str parent, str e)
   = "var <v.name> = new QLrt.SimpleFormElementWidget({
     '  name: \"<v.name>\", 
-    '  label: <l>,
+    '  label: <l.label>,
     '  valueWidget: new QLrt.<type2widget(t)>(<e>) 
     '}).appendTo(<parent>);";
 

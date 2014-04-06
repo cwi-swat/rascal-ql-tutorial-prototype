@@ -9,14 +9,17 @@ import IO;
 import exercises::ImportThis;
 import util::ValueUI;
 
+void snippets() { snippets("tax.ql"); }
+
 /*
  * Paste statements from below into the console,
- * and see what happens.
+ * and see what happens or call the function directly
+ * to get a preview of the QL implements
  */
  
-void snippets() {
+void snippets(str example) {
   // Parse a TQL file in the examples directory
-  ast = loadExample("tax.tql");
+  ast = loadExample(example);
   
   // Explore the AST in a browser
   tree(ast);
@@ -31,7 +34,7 @@ void snippets() {
   resolve(ast);
   
   // Type check a questionnaire (click on locations to jump to editor)
-  check(ast);
+  msgs = check(ast);
   
   // Normalize the questionnaire
   norm = normalize(ast);
@@ -43,6 +46,6 @@ void snippets() {
   println(compile(ast));
   
   // Visualize data dependencies
-  visualize(dataDeps(ast));
+  visualize(controlDeps(ast));
 }
  

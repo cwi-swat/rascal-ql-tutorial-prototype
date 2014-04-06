@@ -57,17 +57,6 @@ public void main() {
         action("Visualize", void (Tree pt, loc selection) {
           ast = implodeQL(pt);
           visualize(resolve(dataDeps(ast)));
-        }),
-        edit("Rename...", str (Tree pt, loc selection) {
-          ast = implodeQL(pt);
-          refs = resolve(ast);
-          names = { u | u <- refs<0> + refs<1>, selection <= u };
-          if ({loc name} := names) {
-            new = prompt("Enter a new name: ");
-            return rename(unparse(pt),  name, new, refs);
-          }
-          alert("No name selected");
-          return unparse(pt);
         })]))
     
   };

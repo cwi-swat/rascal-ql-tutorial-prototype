@@ -27,7 +27,7 @@ void fizzBuzz() {
 
 
 /*
- * General note: press the Reload icon in the toolbar of the Rascal
+ * General note: press the Reload icon (two arrows) in the toolbar of the Rascal
  * perspective to reload your change language implementation in
  * editors (next to the Rascal icons).
  */
@@ -51,6 +51,9 @@ void fizzBuzz() {
  *
  * Optional: change the typechecker so that a warning
  * is issued in the case of ifThen(not(_), ...).
+ * NB: ordering of pattern-based function definitions
+ * is irrelevant, use patterns that are mutually exclusive
+ * or use side conditions with (when ...)
  *
  * Optional: fix the outliner (Outline) so that unless conditions 
  * appears in the outline
@@ -81,32 +84,5 @@ void fizzBuzz() {
  *  - add new case to expr2js in Expr2JS.rsc
  */
  
-
- /*
- * Exercise 4 (transformation): explicit desugaring of unless to ifThen
- *
- * Example of visit:
- *  - Resolve.rsc
- *  - Outline.rsc
- * 
- * Warm up: use visit to
- *  - println out all labels in a form
- *  - count all questions (question/computed)
- *
- * Desugar:
- * - use `visit` to traverse and rewrite the Form
- * - use pattern matching to match on unless nodes.
- * - rewrite unless nodes to ifThen using =>
- *
- * The desugar function is called before compilation
- * so the compiler (Compile) does not have to be changed
- * to support unless, even if no normalize() was used.
- *
- * Optional: add unlessElse, and desugar it to ifThenElse
- */
-
-Form desugar(Form f) {
-  return f;
-}
 
  

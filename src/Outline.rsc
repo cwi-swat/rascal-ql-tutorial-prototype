@@ -21,7 +21,7 @@ node outline(Form f) {
  void addQuestion(Question q) {
    qn = "question"()[@label="<q.name.name>"][@\loc=q@location];
    qs += [qn]; 
-   l = "<q.label>"[1..-1];
+   l = "<q.label.label>"[1..-1];
    ls += ["label"()[@label=l][@\loc=q@location]];
    types += {<type2str(q.tipe), "<q.name.name>", q@location>}; 
  }

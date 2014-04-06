@@ -8,106 +8,102 @@ import String;
 import FormatExpr;
 import Message;
 
- /*
- * Exercise 5 (analysis): extract control dependencies.
+/*
+ * Exercise 4 (transformation): explicit desugaring of unless to ifThen
  *
- * Warm up:
- * - use deep matching (using /) to find a variables in a form
- * - use deep match to find all question with label value (within 
- *   the quotes) equal to name; make sure there are such labels in
- *   your test code.
+ * Example of visit:
+ *  - Resolve.rsc
+ *  - Outline.rsc
  * 
- * Examples of deep match
- * - freeVars in Compile.rsc
- * - typeEnv in Check.rsc
+ * Warm up: use visit to
+ *  - println out all labels in a form
+ *  - count all questions (question/computed)
  *
- * Exercise:
+ * Desugar:
+ * - use `visit` to traverse and rewrite the Form
+ * - use pattern matching to match on unless nodes.
+ * - rewrite unless nodes to ifThen using =>
+ *
+ * The desugar function is called before compilation
+ * so the compiler (Compile) does not have to be changed
+ * to support unless, even if no normalize() was used.
+ *
+ * Optional: add unlessElse, and desugar it to ifThenElse
+ * Optional: write a transformation to simplify algebraic 
+ * expressions (e.g.,  1 * x, 0 + x, true && x, false && x).
+ */
+
+Form desugar(Form f) {
+  return f;
+}
+
+
+ /*
+ * Exercise 5 (analysis): construct a data dependency graph.
  *
  * - use the Node and Deps data types and nodeFor function shown below
- * - visit the form, and when encountering ifThen/ifThenElse
- *   record an edge (tuple) between each Id used in the condition
- *   and each Id defined in the body/bodies.
- * - use deep match (/p) to find Ids in expressions
+ * - visit the form, and when encountering a computed question
+ *   add edges to the Deps graph to record a data dependency. 
+ * - use deep match (/) to find Ids in expressions
  *
- * For inspiration, a function to extract data dependencies
+ * For inspiration, the function to extract control dependencies
  * is shown below.
  *
- * Tip: first define a helper function set[Id] definedIn(Question q)
- * that returns the defined names at arbitrary depth in a question (q).
+ * Tip: use the function visualize(Deps) to visualize the result of your
+ * data dependency graph. Click on nodes to see the location they
+ * correspond to. 
  *
  */
  
 
-alias Node = tuple[loc id, str label];
+alias Node = tuple[loc location, str label];
 alias Deps = rel[Node from, Node to];
 
 Node nodeFor(Id x) = <x@location, x.name>;
 
-Deps dataDeps(Form f) 
-  = { <nodeFor(x), nodeFor(y)> | /computed(_, x, _, e) := f, /Id y := e };
+Deps controlDeps(Form f) {
+  g = {};
+  
+  set[Node] definedIn(Question q)
+    = { nodeFor(d.name) | /Question d := q, d has name };
+    
+  set[Node] usedIn(Expr e) 
+    = { nodeFor(x) | /Id x := e };
+  
+  Deps depsOf(Expr c, Question q) 
+    = {<d, u> | d <- definedIn(q), u <- usedIn(c) };
+  
+  visit (f) {
+    case ifThen(c, q):
+      g += depsOf(c, q);
+    case IfThenElse(c, q1, q2):
+      g += depsOf(c, q1) + depsOf(c, q2);
+  }
+  
+  return g;
+}
 
 /*
- * Observe that dataDeps returns a relation from definitions
- * of (computed) questions to uses of variables (question names).
- * Uses and definitions, however, are not connected in the graph.
- * Write a function `resolve`, which adds tuples <u, d> between
- * any <u, d> in dataDeps that have the same label. 
+ * Observe that the Deps graph returned by controlDeps returns a 
+ * relation from definitions of questions to uses of variables (question
+ *  names). Uses, however, are not connected to their own definitions 
+ * in the graph. The resolve function connects them. 
  */
 
 Deps resolve(Deps deps) {
+  deps += { <u, d> | d <- deps<0>, u <- deps<1>, d.label == u.label };
   return deps;
 }
 
-set[Message] cyclicErrors(Form f) {
-  return {};
-}
-
-
-/* 
- * Exercise 7: Implement a rename refactoring
- * 7a (analysis): compute all locations referencing/referenced by a name loc
- *
- * Warm up:
- * - call resolve(loadExample("tax.tql"))
- * - click on the locations to see where they point
- * - count the number of uses (references) and defs (declarations)
- *   (use size from the standard module Set)
- *
- * This exercise amounts to computing the equivalence relation of the use-def
- * relation `Ref.use` which is declared as `rel[loc use, loc def]`.
- * (See http://en.wikipedia.org/wiki/Equivalence_relation)
- *
- * - obtain the names relation by calling resolve on an AST (Resolve.rsc)
- * - use a comprehension to compute the symmetric closure of a relation
- *   (symmetric closure means <x, y> in the relation if also <y, x>)
- * - use R* to compute the reflexive, transitive closure of a relation
- * - use the "image" R[x] to compute all locs equivalent to `name`.
- */ 
-
-set[loc] eqClass(loc nameOccurrence, rel[loc use, loc def] names) {
-  return {};
-}
-
 /*
- * Exercise 7: Implement a rename refactoring
- * 7b (transformation): substitute all names in the input source
- *
- * - construct a renaming map map[loc, str] based on the result of 7a
- * - use the function substitute(src, map[loc, str]) from String
- * - observe the effect of rename by selecting an identifier
- *   in a TQL editor, and richt-click, select Rename... in the
- *   context menu.
- *
- * Optional: check as precondition that `newName` isn't
- * already used. Retrieve the name at a location by 
- * subscripting on src: src[l.offset..l.offset+l.length].
- *
- * Optional: implement the rename refactoring, but now on ASTs.
- * Use format (Format to see the result of your refactoring.)
- * Why is this approach problematic for implementing refactorings?
+ * Modify the function below to also show data dependency cycles
+ * as errors in the IDE.
  */
-str rename(str src, loc toBeRenamed, str newName, rel[loc use, loc def] use) {
-  equiv = eqClass(toBeRenamed, use);
-  renaming = ( l: newName | l <- equiv );
-  return substitute(src, renaming);
+
+set[Message] cyclicErrors(Form f) {
+  deps = resolve(controlDeps(f))+;
+  return { error("Cyclic dependency", x.location) 
+       | <Node x, Node y> <- deps, <y, x> in deps };
 }
+
+

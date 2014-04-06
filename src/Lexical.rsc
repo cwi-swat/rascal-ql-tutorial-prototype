@@ -1,6 +1,6 @@
 module Lexical
 
-lexical Label = @category="Constant" String; 
+lexical Label = @category="Constant" label: String; 
   
 syntax QType
   = boolean: "boolean" 
