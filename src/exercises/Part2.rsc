@@ -7,6 +7,7 @@ import List;
 import String;
 import FormatExpr;
 import Message;
+import Dependencies;
 
 /*
  * Exercise 4 (transformation): explicit desugaring of unless to ifThen
@@ -41,6 +42,10 @@ Form desugar(Form f) {
  /*
  * Exercise 5 (analysis): construct a data dependency graph.
  *
+ * A computed question is dependent on the questions it refers 
+ * to in its expression. Such dependencies can be represented 
+ * as a binary relation (a set of tuples). The goal of this 
+ * exercise is to extract such a relation.
  * - use the Node and Deps data types and nodeFor function shown below
  * - visit the form, and when encountering a computed question
  *   add edges to the Deps graph to record a data dependency. 
@@ -56,54 +61,14 @@ Form desugar(Form f) {
  */
  
 
-alias Node = tuple[loc location, str label];
-alias Deps = rel[Node from, Node to];
-
-Node nodeFor(Id x) = <x@location, x.name>;
-
-Deps controlDeps(Form f) {
-  g = {};
-  
-  set[Node] definedIn(Question q)
-    = { nodeFor(d.name) | /Question d := q, d has name };
-    
-  set[Node] usedIn(Expr e) 
-    = { nodeFor(x) | /Id x := e };
-  
-  Deps depsOf(Expr c, Question q) 
-    = {<d, u> | d <- definedIn(q), u <- usedIn(c) };
-  
-  visit (f) {
-    case ifThen(c, q):
-      g += depsOf(c, q);
-    case IfThenElse(c, q1, q2):
-      g += depsOf(c, q1) + depsOf(c, q2);
-  }
-  
-  return g;
-}
-
-/*
- * Observe that the Deps graph returned by controlDeps returns a 
- * relation from definitions of questions to uses of variables (question
- *  names). Uses, however, are not connected to their own definitions 
- * in the graph. The resolve function connects them. 
+/* NB:
+ * alias Node = tuple[loc location, str label]; 
+ * alias Deps = rel[Node from, Node to];
  */
-
-Deps resolve(Deps deps) {
-  deps += { <u, d> | d <- deps<0>, u <- deps<1>, d.label == u.label };
-  return deps;
+ 
+Deps dataDeps(Form f) {
+  return { <nodeFor(x), nodeFor(y)> | /computed(_, x, _, e) := f, /Id y := e };
 }
 
-/*
- * Modify the function below to also show data dependency cycles
- * as errors in the IDE.
- */
-
-set[Message] cyclicErrors(Form f) {
-  deps = resolve(controlDeps(f))+;
-  return { error("Cyclic dependency", x.location) 
-       | <Node x, Node y> <- deps, <y, x> in deps };
-}
 
 

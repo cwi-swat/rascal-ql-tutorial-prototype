@@ -8,6 +8,7 @@ import Outline;
 import Compile;
 import Normalize;
 import Visualize;
+import Dependencies;
 import exercises::Part1;
 import exercises::Part2;
 import AST;
@@ -36,13 +37,13 @@ public void main() {
     annotator(Tree(Tree pt) {
       ast = implodeQL(pt);
       ref = resolve(ast);
-      msgs = check(ast, ref) + cyclicErrors(ast);
+      msgs = check(ast, ref);
       return pt[@messages=msgs][@hyperlinks=ref];
     }),
     
     builder(set[Message] (Tree pt) {
       ast = implodeQL(pt);
-      msgs = check(ast);
+      msgs = check(ast) + cyclicErrors(controlDeps(ast) + dataDeps(ast));
       if (msgs == {}) {
         js = pt@\loc[extension="js"];
         writeFile(js, compile(desugar(ast)));
@@ -56,7 +57,7 @@ public void main() {
       menu("Tutorial QL", [
         action("Visualize", void (Tree pt, loc selection) {
           ast = implodeQL(pt);
-          visualize(resolve(dataDeps(ast)));
+          visualize(resolve(controlDeps(ast) + dataDeps(ast)));
         })]))
     
   };
