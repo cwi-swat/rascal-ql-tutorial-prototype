@@ -37,7 +37,7 @@ public void main() {
     annotator(Tree(Tree pt) {
       ast = implodeQL(pt);
       ref = resolve(ast);
-      msgs = check(ast, ref);
+      msgs = check(ast, ref) + cyclicErrors(controlDeps(ast) + dataDeps(ast));
       return pt[@messages=msgs][@hyperlinks=ref];
     }),
     
