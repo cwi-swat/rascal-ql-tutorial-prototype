@@ -11,6 +11,7 @@ import Visualize;
 import Dependencies;
 import exercises::Part1;
 import exercises::Part2;
+import exercises::Xtra;
 import AST;
 
 import ParseTree;
@@ -55,6 +56,17 @@ public void main() {
     
     popup(
       menu("Tutorial QL", [
+         edit("Rename...", str (Tree pt, loc selection) {
+           ast = implodeQL(pt);
+           refs = resolve(ast);
+           names = { u | u <- refs<0> + refs<1>, selection <= u };
+           if ({loc name} := names) {
+             new = prompt("Enter a new name: ");
+             return rename(unparse(pt),  name, new, refs);
+           }
+           alert("No name selected");
+           return unparse(pt);
+          }),
         action("Visualize", void (Tree pt, loc selection) {
           ast = implodeQL(pt);
           visualize(resolve(controlDeps(ast) + dataDeps(ast)));

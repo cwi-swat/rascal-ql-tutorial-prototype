@@ -46,13 +46,14 @@ Form desugar(Form f) {
  * to in its expression. Such dependencies can be represented 
  * as a binary relation (a set of tuples). The goal of this 
  * exercise is to extract such a relation.
- * - use the Node and Deps data types and nodeFor function shown below
+ * - use the Node and Deps data types and nodeFor function shown 
+ *   in Dependencies.rsc
  * - visit the form, and when encountering a computed question
  *   add edges to the Deps graph to record a data dependency. 
  * - use deep match (/) to find Ids in expressions
  *
  * For inspiration, the function to extract control dependencies
- * is shown below.
+ * is shown Dependencies.rsc.
  *
  * Tip: use the function visualize(Deps) to visualize the result of your
  * data dependency graph. Click on nodes to see the location they

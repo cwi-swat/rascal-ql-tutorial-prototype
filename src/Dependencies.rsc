@@ -9,17 +9,23 @@ alias Deps = rel[Node from, Node to];
 Node nodeFor(Id x) = <x@location, x.name>;
 
 Deps controlDeps(Form f) {
-  g = {};
-  
+
+  // Helper functions.
+  // The set of alll questions defined withing a single
+  // question (e.q. ifThen or, ifThenElse).  
   set[Node] definedIn(Question q)
     = { nodeFor(d.name) | /Question d := q, d has name };
     
+  // The set variable occurrences used in an Expr.
   set[Node] usedIn(Expr e) 
     = { nodeFor(x) | /Id x := e };
   
+  // Edges between defined questions in the context of q
+  // and the expression c.
   Deps depsOf(Expr c, Question q) 
     = {<d, u> | d <- definedIn(q), u <- usedIn(c) };
   
+  g = {};
   visit (f) {
     case ifThen(c, q):
       g += depsOf(c, q);
