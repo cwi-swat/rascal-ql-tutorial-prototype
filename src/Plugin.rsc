@@ -8,6 +8,7 @@ import Outline;
 import Compile;
 import Normalize;
 import Visualize;
+import Format;
 import Dependencies;
 import exercises::Part1;
 import exercises::Part2;
@@ -70,6 +71,10 @@ public void main() {
         action("Visualize", void (Tree pt, loc selection) {
           ast = implodeQL(pt);
           visualize(resolve(controlDeps(ast) + dataDeps(ast)));
+        }),
+        
+        edit("Format", str (Tree pt, loc selection) {
+          return format(implodeQL(pt));
         })]))
     
   };
