@@ -47,9 +47,9 @@ public void main() {
       ast = implodeQL(pt);
       msgs = check(ast) + cyclicErrors(controlDeps(ast) + dataDeps(ast));
       if (msgs == {}) {
-        js = pt@\loc[extension="js"];
+        js = pt@\loc.top[extension="js"];
         writeFile(js, compile(desugar(ast)));
-        html = pt@\loc[extension="html"];
+        html = pt@\loc.top[extension="html"];
         writeFile(html, form2html(ast.name, js));
       }
       return msgs;
