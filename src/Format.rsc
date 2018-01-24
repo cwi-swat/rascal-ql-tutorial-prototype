@@ -4,7 +4,7 @@ import AST;
 import Node;
 import FormatExpr;
 
-import lang::box::util::SimpleBox;
+import lang::box::SimpleBox;
 
 str format(Form f) = format(format_(f));
 
