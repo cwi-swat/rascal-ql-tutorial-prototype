@@ -12,7 +12,7 @@ import Format;
 import Dependencies;
 import exercises::Part1;
 import exercises::Part2;
-import exercises::Xtra;
+import exercises::Part3;
 import AST;
 
 import ParseTree;
@@ -63,7 +63,7 @@ public void main() {
            names = { u | u <- refs<0> + refs<1>, selection <= u };
            if ({loc name} := names) {
              new = prompt("Enter a new name: ");
-             return rename(unparse(pt),  name, new, refs);
+             return rename(unparse(pt), name, new, refs);
            }
            alert("No name selected");
            return unparse(pt);
