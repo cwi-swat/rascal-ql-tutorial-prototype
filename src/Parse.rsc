@@ -7,8 +7,9 @@ import util::Brackets;
 import lang::rascal::grammar::definition::Priorities;
 
 
-Tree parseQL(loc l) = parse(#start[Form], l);
-Tree parseQL(str src) = parse(#start[Form], src);
-Tree parseQL(str src, loc l) = parse(#start[Form], src, l);
+start[Form] parseQL(loc l) = parse(#start[Form], l);
+start[Form] parseQL(str src) = parse(#start[Form], src);
+start[Form] parseQL(str src, loc l) = parse(#start[Form], src, l);
+start[Form] parseExample(str example) = parseQL(|project://RascalQLTutorial/examples/<example>|);
 
 DoNotNest qlPriorities() = prioritiesOf(#Form);
