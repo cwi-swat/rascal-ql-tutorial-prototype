@@ -1,13 +1,12 @@
 module exercises::Snippets
 
-import IO;
 
 /*
  * First, past the following imports in the console;
  */
- 
 import exercises::ImportThis;
 import util::ValueUI;
+import IO; 
 
 /*
  * Paste statements from below into the console,
@@ -18,9 +17,6 @@ import util::ValueUI;
 void snippets() {
   // Parse a TQL file in the examples directory
   ast = loadExample("tax.tql");
-  
-  // Explore the AST in a browser
-  tree(ast);
   
   // Explore the AST in a textual editor
   text(ast);

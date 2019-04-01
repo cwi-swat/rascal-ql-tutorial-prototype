@@ -3,7 +3,7 @@ module Compile
 import AST;
 import Expr2JS;
 import Normalize;
-import Set;
+import Set; 
 import List;
 import String;
 import IO;

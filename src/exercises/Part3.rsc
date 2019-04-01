@@ -31,10 +31,22 @@ import analysis::graphs::Graph;
  * - use the "image" R[x] to compute all locs 'equivalent' to `name`.
  */ 
 
-set[loc] eqClass(loc nameOccurrence, rel[loc use, loc def] names) {
-  return {};
-}
-
+set[loc] eqClass(loc x, rel[loc use, loc def] names) { 
+  // x is a use
+  set[loc] result = {};
+  defs = names[x];
+  directUses = { u | loc d <- defs, <loc u, d> <- names };
+  
+  // x is a def
+  uses = names<1,0>[x];
+  moreDefs = { d | loc u <- uses, <u, loc d> <- names };
+  moreDefsAndUses = moreDefs 
+    + { u | loc d <- moreDefs, <loc u, d> <- names };
+    
+  
+  return directUses + moreDefsAndUses + defs;
+ }
+  
 /*
  * Exercise 6: Implement a rename refactoring
  * 6b (transformation): substitute all names in the input source
@@ -42,7 +54,7 @@ set[loc] eqClass(loc nameOccurrence, rel[loc use, loc def] names) {
  * Construct a renaming map map[loc, str] based on the result of 6a
  * use the function substitute(src, map[loc, str]) from the String 
  * module. Observe the effect of rename by selecting an identifier
- * in a TQL editor, and richt-click, select Rename... in the
+ * in a TQL editor, and right-click, select Rename... in the
  * context menu.
  *
  * Optional: check as precondition that `newName` isn't
@@ -53,8 +65,15 @@ set[loc] eqClass(loc nameOccurrence, rel[loc use, loc def] names) {
  * Use format (Format to see the result of your refactoring.)
  * Why is this approach problematic for implementing refactorings?
  */
-str rename(str src, loc toBeRenamed, str newName, rel[loc use, loc def] use) {
+str rename(str src, loc toBeRenamed, str newName, rel[loc use, loc def] use) { 
   return src;
+}
+
+start[Form] rename(start[Form] pt, loc toBeRenamed, str newName, rel[loc use, loc def] use) {
+  ec = eqClass(use);
+  return visit (pt) {
+    case Id x => [Id]newName when x@\loc // ...
+  }
 }
 
 /*
