@@ -29,7 +29,7 @@ Deps controlDeps(Form f) {
   visit (f) {
     case ifThen(c, q):
       g += depsOf(c, q);
-    case IfThenElse(c, q1, q2):
+    case ifThenElse(c, q1, q2):
       g += depsOf(c, q1) + depsOf(c, q2);
   }
   
