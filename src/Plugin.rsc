@@ -23,8 +23,6 @@ import IO;
 
 private str TQL ="Tutorial QL";
 
-anno rel[loc, loc] Tree@hyperlinks;
-
 public void main() { 
   registerLanguage(TQL, "tql", Tree(str src, loc l) {
     return parseQL(src, l);
